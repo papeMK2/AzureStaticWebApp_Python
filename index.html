@@ -1,6 +1,39 @@
 <html>
     <head></head>
     <body>
-        <h1>Default Page</h1>
+        <div id="app">
+            <h1>Default Page</h1>
+            <div>Counter : {{ counter }}</div>
+            <div>{{ message }}</div>
+            <button v-on:click="onClick">Click here</button>
+        </div>
+
     </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue@next"></script>
+<script type="text/javascript">
+    const app = {
+        data() {
+            return {
+                counter: 0,
+                message: ''
+            }
+        },
+        methods: {
+            onClick() {
+                const that = this
+                axios.get('/api/echo?name=hello&num=' + that.counter)
+                    .then((response) => {
+                        that.counter++
+                        that.message = response.data
+                    }).catch((error) => {
+                        console.log(response)
+                    })
+            }
+        }
+    }
+
+    Vue.createApp(app).mount('#app')
+</script>
